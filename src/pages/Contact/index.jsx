@@ -18,7 +18,6 @@ const Contact = () => {
     const slider=img[index];
     setSliderData(slider);
   }
-
   return(
     <>
     <div className='category'>
