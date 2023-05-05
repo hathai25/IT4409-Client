@@ -61,7 +61,15 @@ const Footer = () => {
               <Link to="/">FAQS</Link>
             </li>
             <li>
-              <Link to="/"><FacebookFilled /> <TwitterCircleFilled/> <PhoneFilled/></Link>
+              <Link to={"/"}>
+                <FacebookFilled style={{color: "#ffffff", paddingRight: 16}} />
+              </Link>
+              <Link to={"/"}>
+                <TwitterCircleFilled style={{color: "#ffffff", paddingRight: 16}}/>
+              </Link>
+              <Link to={"/"}>
+                <PhoneFilled style={{color: "#ffffff"}}/>
+              </Link>
             </li>
           </ul>
         </Col>

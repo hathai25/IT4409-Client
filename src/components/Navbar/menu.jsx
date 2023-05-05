@@ -3,7 +3,7 @@ import Shop from "../../pages/Shop/index.jsx";
 import Contact from "../../pages/Contact/index.jsx";
 import About from "../../pages/About/index.jsx";
 
-export const Menu = [
+export const MENU = [
   {
     name: 'Home',
     path: '/',

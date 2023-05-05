@@ -1,11 +1,12 @@
 import Navbar from "../../components/Navbar/index.jsx";
 import Footer from "../../components/Footer/index.jsx";
+import "./style.scss"
 
 const Layout = ({children}) => {
   return(
     <div>
       <Navbar/>
-      <div>
+      <div className="container">
         {children}
       </div>
       <Footer/>
