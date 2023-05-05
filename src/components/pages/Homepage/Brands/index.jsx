@@ -37,7 +37,7 @@ const mockData = [
 
 const Brands = () => {
   return(
-    <div style={{marginBottom: 96}}>
+    <div style={{marginBottom: 48}}>
       <h2 style={{textAlign: "left"}}>Brands</h2>
       <div style={{padding: "0 48px"}}>
         <Swiper

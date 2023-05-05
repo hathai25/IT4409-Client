@@ -5,7 +5,7 @@ const { Meta } = Card;
 
 const Services = () => {
   return(
-    <div style={{textAlign: "left", marginBottom: 96}}>
+    <div style={{textAlign: "left", marginBottom: 48}}>
       <Row style={{margin: "32px 0"}}>
         <Col style={{borderRight: "1px solid black", paddingLeft: 16}} span={12}>
           <h2 className="title">We provide best customer experiences</h2>
