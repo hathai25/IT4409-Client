@@ -1,5 +1,5 @@
 import "./style.scss";
-import {Menu} from "./menu.jsx";
+import {MENU} from "./menu.jsx";
 import {Link} from "react-router-dom";
 const Navbar = () => {
   return(
@@ -8,7 +8,7 @@ const Navbar = () => {
         <h2>Logo</h2>
       </div>
       <div className="menu">
-        {Menu.map((item, index) =>
+        {MENU.map((item, index) =>
           <div className="menu-item" key={index}><Link to={item?.path}>{item?.name}</Link></div>
         )}
       </div>
