@@ -11,8 +11,8 @@ import "swiper/css/autoplay";
 import "./style.scss";
 const Category = () => {
   return(
-    <div style={{marginBottom: 96}}>
-      <h2 style={{textAlign: "left", marginTop: 48}}>Category</h2>
+    <div style={{marginBottom: 48}}>
+      <h2 style={{textAlign: "left"}}>Category</h2>
         <div>
           <Swiper
             slidesPerView={1}

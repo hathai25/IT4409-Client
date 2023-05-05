@@ -5,7 +5,7 @@ import {MailOutlined} from "@ant-design/icons";
 const Subscribe = () => {
   return(
     <div>
-      <Row justify={"center"} style={{marginBottom: 96}}>
+      <Row justify={"center"} style={{marginBottom: 48}}>
         <Col sx={24} lg={12}>
           <h2 style={{marginTop: 48}}>Subcribe to our newsletter to get updates to our latest collections</h2>
           <p>Get 20% off on your first order just by subscribing to our newsletter</p>

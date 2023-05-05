@@ -8,7 +8,7 @@ const Navbar = () => {
         <h2>Logo</h2>
       </div>
       <div className="menu">
-        {MENU.map((item, index) =>
+        {MENU.filter(e => e.name).map((item, index) =>
           <div className="menu-item" key={index}><Link to={item?.path}>{item?.name}</Link></div>
         )}
       </div>

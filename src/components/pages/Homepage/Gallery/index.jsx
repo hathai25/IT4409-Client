@@ -10,7 +10,7 @@ const contentStyle = {
 };
 const Gallery = () => {
   return(
-    <div style={{margin: "96px 0 48px 0"}}>
+    <div style={{marginBottom: "48px"}}>
       <Carousel effect="fade">
         <div>
           <h3 style={contentStyle}>1</h3>
