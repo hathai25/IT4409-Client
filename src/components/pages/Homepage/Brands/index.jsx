@@ -1,6 +1,7 @@
 import {Image, Row} from "antd";
 import {Swiper, SwiperSlide} from "swiper/react";
 import {Autoplay, Pagination} from 'swiper';
+
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/autoplay";

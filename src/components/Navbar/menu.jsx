@@ -4,6 +4,7 @@ import Contact from "../../pages/Contact/index.jsx";
 import About from "../../pages/About/index.jsx";
 import SignIn from "../../pages/SignIn/index.jsx";
 import SignUp from "../../pages/SignUp/index.jsx";
+import ProductDetail from "../../pages/Shop/[id]/index.jsx";
 
 export const MENU = [
   {
@@ -15,6 +16,10 @@ export const MENU = [
     name: 'Shop',
     path: '/shop',
     element: <Shop/>
+  },
+  {
+    path: '/shop/product/:id',
+    element: <ProductDetail/>
   },
   {
     name: 'Contact',
