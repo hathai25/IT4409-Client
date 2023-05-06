@@ -1,0 +1,36 @@
+.product {
+  width: 70%;
+  @media (max-width: 768px) {
+    width: 100%;
+  }
+  @media (max-width: 1024px) {
+    width: 90%;
+  }
+  margin: 0 auto;
+  text-align: left;
+
+  &-detail {
+    border-bottom: 1px solid #ebebeb;
+  }
+
+  &-action {
+    border-bottom: 1px solid #ebebeb;
+    margin-bottom: 1.6rem;
+
+    &-size {
+      margin: 1.6rem 0;
+
+      &-col {
+        border: 1px solid #d9d9d9;
+        border-radius: 25px;
+      }
+
+      &-radio {
+        font-size: 18px;
+        height: 27px;
+        line-height: 27px;
+        margin-right: 16px;
+      }
+    }
+  }
+}
