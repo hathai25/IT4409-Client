@@ -34,7 +34,7 @@ const ProductGallery = ({images}) => {
           modules={[Autoplay, Navigation, Thumbs]}
           className="mySwiper2"
         >
-          {images.map((image, index) => (
+          {images?.map((image, index) => (
             <SwiperSlide key={index}>
               <Image
                 key={index}
@@ -56,7 +56,7 @@ const ProductGallery = ({images}) => {
           modules={[FreeMode, Navigation, Thumbs]}
           className="mySwiper3"
         >
-          {images.map((image, index) => (
+          {images?.map((image, index) => (
             <SwiperSlide key={index}>
               <Image
                 preview={false}

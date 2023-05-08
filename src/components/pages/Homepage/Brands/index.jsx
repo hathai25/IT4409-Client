@@ -6,6 +6,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/autoplay";
 import "./style.scss";
+import AntImage from "../../../common/AntImage/index.jsx";
 
 
 const mockData = [
@@ -72,12 +73,11 @@ const Brands = () => {
         >
           {mockData.map((item, index) => (
             <SwiperSlide key={index}>
-              <Image
+              <AntImage
                 style={{padding: "50px 0"}}
                 width={'100%'}
                 height={'100%'}
                 src={item?.image}
-                alt='slide-img'
                 objectFit='contain'
                 layout={'fixed'}
                 preview={false}

@@ -18,57 +18,61 @@ const Contact = () => {
     })
   }
   return (
-    <Row gutter={32}>
-      <Col xs={24} md={12}>
-        <div className="background">
-          <h1>Contact Us</h1>
-          <p>Need to get in touch with us? Either fill out the form with
-            your inquiry or find the department email you'd like to contact below.
-          </p>
-        </div>
-      </Col>
-      <Col xs={24} md={12}>
-        <Form
-          form={form}
-          name={"contact"}
-          layout={"vertical"}
-          onFinish={onFinish}
-          className="contact-form"
-        >
-          <Form.Item
-            name="firstname"
-            label="First Name"
-            rules={[{required: true, message: 'Please input your first name!'}]}
+    <div>
+      <h1>Contact</h1>
+      <Row gutter={32}>
+        <Col xs={24} md={12}>
+          <div className="background">
+            <h1>Contact Us</h1>
+            <p>Need to get in touch with us? Either fill out the form with
+              your inquiry or find the department email you'd like to contact below.
+            </p>
+          </div>
+        </Col>
+        <Col xs={24} md={12}>
+          <Form
+            form={form}
+            name={"contact"}
+            layout={"vertical"}
+            onFinish={onFinish}
+            className="contact-form"
           >
-            <Input/>
-          </Form.Item>
-          <Form.Item
-            name="lastname"
-            label="Last Name"
-            rules={[{required: true, message: 'Please input your last name!'}]}
-          >
-            <Input/>
-          </Form.Item>
-          <Form.Item
-            name="email"
-            label="Email"
-            rules={[{required: true, message: 'Please input your email!'}, {type: 'email', message: 'Please input a valid email!'}]}
-          >
-            <Input/>
-          </Form.Item>
-          <Form.Item
-            name="description"
-            label="What can we help you with?"
-            rules={[{required: true, message: 'Please input your request!'}]}
-          >
-            <TextArea/>
-          </Form.Item>
-          <Form.Item>
-            <AntButton style={{width: "40%"}} text={"Submit"} htmlType={"submit"}/>
-          </Form.Item>
-        </Form>
-      </Col>
-    </Row>
+            <Form.Item
+              name="firstname"
+              label="First Name"
+              rules={[{required: true, message: 'Please input your first name!'}]}
+            >
+              <Input/>
+            </Form.Item>
+            <Form.Item
+              name="lastname"
+              label="Last Name"
+              rules={[{required: true, message: 'Please input your last name!'}]}
+            >
+              <Input/>
+            </Form.Item>
+            <Form.Item
+              name="email"
+              label="Email"
+              rules={[{required: true, message: 'Please input your email!'}, {type: 'email', message: 'Please input a valid email!'}]}
+            >
+              <Input/>
+            </Form.Item>
+            <Form.Item
+              name="description"
+              label="What can we help you with?"
+              rules={[{required: true, message: 'Please input your request!'}]}
+            >
+              <TextArea/>
+            </Form.Item>
+            <Form.Item>
+              <AntButton style={{width: "40%"}} text={"Submit"} htmlType={"submit"}/>
+            </Form.Item>
+          </Form>
+        </Col>
+      </Row>
+
+    </div>
   )
 }
 

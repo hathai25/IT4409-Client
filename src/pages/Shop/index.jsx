@@ -1,18 +1,31 @@
 import {Pagination, Row} from "antd";
 import ProductCard from "../../components/ProductCard/index.jsx";
-import {mockProducts} from "../../fakeData.js";
 
 import "./style.scss";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import Filter from "../../components/pages/Shop/Filter/index.jsx";
+import {getAllProducts} from "../../services/shop.service.js";
+import {useWindowSize} from "../../hook/useWindowSize.js";
+import {SM} from "../../constants.js";
 
 const Shop = () => {
-  const [products, setProducts] = useState(mockProducts?.products);
+  const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const windowSize = useWindowSize();
   const productsPerPage = 16
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
   const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
+
+  useEffect(() => {
+    try {
+      getAllProducts().then((res) => {
+        setProducts(res?.data?.products)
+      })
+    } catch (error) {
+      console.log({error})
+    }
+  }, [])
 
   return(
     <div>
@@ -25,10 +38,12 @@ const Shop = () => {
       */}
       <h1>Shop</h1>
       <Row>
-        <Row style={{width: "100%"}}>
-          <Filter/>
-        </Row>
-        <Row className="shop-products" gutter={[32, 32]}>
+        {windowSize.width >= SM && (
+          <Row style={{width: "100%"}}>
+            <Filter/>
+          </Row>
+        )}
+        <Row className="shop-products" gutter={windowSize.width >= SM ? [32, 32] : [16, 16]}>
           {currentProducts.map((product) => (
             <ProductCard product={product} key={product?.id}/>
           ))}
@@ -37,7 +52,7 @@ const Shop = () => {
           <Pagination
             onChange={(page) => setCurrentPage(page)}
             pageSize={productsPerPage}
-            total={mockProducts?.products.length}
+            total={products.length}
           />
         </Row>
       </Row>

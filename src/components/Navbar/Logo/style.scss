@@ -1,0 +1,20 @@
+.header__logo {
+  display: flex;
+  align-items: center;
+
+  padding: 10px 0;
+
+  .header-image {
+    width: 136px;
+    @media (max-width: 991px) {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      -ms-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+    }
+  }
+  .drop-menu {
+    display: none;
+  }
+}

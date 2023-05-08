@@ -22,7 +22,7 @@ const ProductInfo = ({product}) => {
         <h1>{product?.title}</h1>
         <p>{product?.description}</p>
         <Rate value={product?.rating} disabled/>
-        <h3>{formatCurrency(product?.price)}</h3>
+        <h3>{formatCurrency(parseInt(product?.price))}</h3>
       </div>
       <div className="product-action">
         <Form>
