@@ -6,13 +6,46 @@ import {
   PhoneOutlined,
   UserOutlined
 } from '@ant-design/icons';
-import {Button, Checkbox, Form, Input, Col, Row} from 'antd';
+import {Button, Checkbox, Form, Input, Col, Row, notification} from 'antd';
 import "./style.scss";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import {registerUser} from "../../services/auth.service.js";
+import AntButton from "../../components/common/Button/index.jsx";
 
 const SignUp = () => {
-  const onFinish = (values) => {
+  const navigate = useNavigate();
+  const [form] = Form.useForm();
+  const onFinish = async (values) => {
     console.log('Received values of form: ', values);
+    try {
+      const result = await registerUser(values).then((res) => res);
+      if (result.status === 201) {
+        notification.success({
+          message: 'Success',
+          description: 'Sign up successfully! Redirecting to sign in page...',
+        });
+        form.resetFields();
+        setTimeout(() => {
+          navigate('/sign-in');
+        }, 3000);
+      } else if (result.status === 400) {
+        notification.error({
+          message: 'Error',
+          description: 'Username or email already exists!',
+        });
+      } else {
+        notification.error({
+          message: 'Error',
+          description: 'Something went wrong! Please try again.',
+        });
+      }
+    } catch (e) {
+      console.log(e);
+      notification.error({
+        message: 'Error',
+        description: 'Something went wrong! Please try again.',
+      });
+    }
   };
 
   return(
@@ -24,6 +57,7 @@ const SignUp = () => {
           className="login-form"
           initialValues={{ remember: true }}
           onFinish={onFinish}
+          form={form}
         >
           <Form.Item
             name="username"
@@ -60,34 +94,7 @@ const SignUp = () => {
               className="signup-input"
             />
           </Form.Item>
-          <Form.Item
-            name="phone_number"
-            rules={[
-              { type: "number", message: 'Must be a valid phone number!' },
-              { required: true, message: 'Please type your phone number!' }
-            ]}
-          >
-            <Input
-              prefix={<PhoneOutlined className="site-form-item-icon" />}
-              type="phone number"
-              placeholder="Phone Number"
-              className="signup-input"
-            />
-          </Form.Item>
-          <Form.Item
-            name="address"
-            rules={[{ required: true, message: 'Please type your address!' }]}
-          >
-            <Input
-              prefix={<HomeOutlined className="site-form-item-icon" />}
-              type="address"
-              placeholder="Address"
-              className="signup-input"
-            />
-          </Form.Item>
-          <Button type="primary" htmlType="submit" className="signup-button-submit">
-            Sign up
-          </Button>
+          <AntButton text={"Sign up"} htmlType="submit" theme={'dark'} style={{width: "100%", borderRadius: 20}}/>
           <div className="signup-other">
             Or sign up with
             <div>
@@ -102,9 +109,7 @@ const SignUp = () => {
           <div className="signup-forgot-password">
             Already have an account?
           </div>
-            <Button className="signup-button-register">
-              <Link to={"/sign-in"}>Sign in here!</Link>
-            </Button>
+          <AntButton text={"Sign in here!"} onClick={() => navigate("/sign-in")} theme={'white'} style={{width: "100%", borderRadius: 20, border: "1px solid #000"}}/>
         </Form>
       </Col>
     </div>

@@ -1,9 +1,11 @@
 import {FacebookFilled, GoogleCircleFilled, LockOutlined, UserOutlined} from '@ant-design/icons';
 import {Button, Checkbox, Form, Input, Col, Row} from 'antd';
 import "./style.scss";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import AntButton from "../../components/common/Button/index.jsx";
 
 const SignIn = () => {
+  const navigate = useNavigate();
   const onFinish = (values) => {
     console.log('Received values of form: ', values);
   };
@@ -44,9 +46,7 @@ const SignIn = () => {
               Forgot password?
             </Link>
           </div>
-          <Button type="primary" htmlType="submit" className="login-button-submit">
-            Log in
-          </Button>
+          <AntButton text={"Log in"} htmlType="submit" theme={'dark'} style={{width: "100%", borderRadius: 20}}/>
           <div className="login-other">
             Or sign in with
             <div>
@@ -61,9 +61,8 @@ const SignIn = () => {
           <div className="login-forgot-password">
             Don't have an account?
           </div>
-            <Button className="login-button-register">
-              <Link to={"/sign-up"}>Register now!</Link>
-            </Button>
+          <AntButton text={"Register now!"} onClick={() => navigate("/sign-up")} theme={'white'} style={{width: "100%", borderRadius: 20, border: "1px solid #000"}}/>
+
         </Form>
       </Col>
     </div>
