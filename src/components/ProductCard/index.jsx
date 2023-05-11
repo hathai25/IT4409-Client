@@ -21,6 +21,7 @@ const ProductCard = ({ product }) => {
     <Col xs={12} xl={6}>
       <Link to={`/shop/product/${product?.id}`} className="card-link">
         <Card
+          className={""}
           hoverable
           cover={
             <AntImage

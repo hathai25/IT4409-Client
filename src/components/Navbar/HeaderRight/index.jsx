@@ -1,16 +1,23 @@
 import "./style.scss";
-import {Avatar, Dropdown, Space} from "antd";
+import {Avatar, Dropdown, notification, Space} from "antd";
 import {useWindowSize} from "../../../hook/useWindowSize.js";
 import {LG, MD} from "../../../constants.js";
 import {DownOutlined, LoginOutlined, ShoppingCartOutlined, UserAddOutlined, UserOutlined} from "@ant-design/icons";
 import {Link, useNavigate} from "react-router-dom";
 import LogoutIcon from "../../../assets/icons/LogOutIcon.jsx";
+import {useDispatch, useSelector} from "react-redux";
+import {useEffect} from "react";
+import {userLoginSuccess} from "../../../redux/actions/index.js";
+import {getUserInfo} from "../../../redux/actions/user.action.js";
+import axios from "axios";
 
 
 const HeaderRight = () => {
+  const dispatch = useDispatch();
   const token = localStorage.getItem('token');
   const windowSize = useWindowSize();
-  let cart, avatar_url, first_name, last_name, productCart = []
+  const {avatar, username, productCart} = useSelector((state) => state.userInfo);
+  let cart;
   const navigate = useNavigate();
 
   const menu = [
@@ -41,13 +48,31 @@ const HeaderRight = () => {
     {
       key: '3',
       label: (
-        <div className='menuUserItem' onClick={() => console.log("log out")}>
+        <div className='menuUserItem' onClick={() => {
+          dispatch(userLoginSuccess(null));
+          localStorage.clear();
+          notification.success({
+            message: 'Success',
+            description: 'Logout successfully!',
+          });
+        }}>
           <LogoutIcon className='menuUserItem__icon' />
           <span>Log out</span>
         </div>
       ),
     },
   ];
+
+  useEffect(() => {
+    if (!token) {
+      dispatch(getUserInfo({
+        avatar_url: null,
+        first_name: null,
+        last_name: null,
+        productCart: []
+      }))
+    }
+  }, [dispatch, token])
 
   return(
     <div className='header__right'>
@@ -63,14 +88,14 @@ const HeaderRight = () => {
                 <a onClick={(e) => e.preventDefault()}>
                   <Space>
                     <span>
-                      {avatar_url ? (
-                        <Avatar src={avatar_url} size={24} alt='avt' />
+                      {avatar ? (
+                        <Avatar src={avatar} size={24} alt='avt' />
                       ) : (
                         <UserOutlined />
                       )}
                     </span>
                     {windowSize.width >= MD &&
-                      `${last_name ?? ''} ${first_name ?? ''}`}
+                      `${username ?? ''}`}
                     <DownOutlined />
                   </Space>
                 </a>
@@ -78,8 +103,8 @@ const HeaderRight = () => {
             ) : (
               <Link to={'/profile'}>
                 <span>
-                  {avatar_url ? (
-                    <Avatar src={avatar_url} size={24} alt='avt' />
+                  {avatar ? (
+                    <Avatar src={avatar} size={24} alt='avt' />
                   ) : (
                     <UserOutlined />
                   )}

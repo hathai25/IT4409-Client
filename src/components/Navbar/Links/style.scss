@@ -33,12 +33,12 @@
       width: 100%;
       height: 3px;
       opacity: 0;
-      background: #b3842c;
+      background: #0d6efd;
       transition: 0.3s;
     }
 
     .list-item:hover {
-      color: #b3842c;
+      color: #0d6efd;
     }
 
     .list-item:hover::after {
@@ -64,7 +64,7 @@
         width: 100%;
         height: 3px;
         opacity: 1;
-        background: #b3842c;
+        background: #0d6efd;
         transition: 0.3s;
 
         @media (max-width:991px) {
@@ -72,7 +72,7 @@
         }
       }
       .list-item {
-        color: #b3842c;
+        color: #0d6efd;
       }
     }
   }

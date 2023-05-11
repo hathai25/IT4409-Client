@@ -6,4 +6,5 @@ export const SHOP_API = {
 export const AUTH_API = {
   LOGIN: '/auth/login',
   REGISTER: '/auth/register',
+  GET_ME: '/auth/me',
 }
