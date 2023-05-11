@@ -16,7 +16,6 @@ const SignUp = () => {
   const navigate = useNavigate();
   const [form] = Form.useForm();
   const onFinish = async (values) => {
-    console.log('Received values of form: ', values);
     try {
       const result = await registerUser(values).then((res) => res);
       if (result.status === 201) {

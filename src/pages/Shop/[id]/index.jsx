@@ -15,7 +15,6 @@ const ProductDetail = () => {
   useEffect(() => {
     try {
       getProductDetail(id).then((res) => {
-        console.log({res})
         setProduct({
           ...res?.data,
           size: ["S", "M", "L", "XL", "XXL"],

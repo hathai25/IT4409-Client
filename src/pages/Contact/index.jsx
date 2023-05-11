@@ -9,7 +9,6 @@ const Contact = () => {
 
   const onFinish = (values) => {
     if (!values) return
-    console.log(values)
     form.resetFields();
     notification.success({
       message: "Success!",

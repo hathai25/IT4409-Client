@@ -1,13 +1,49 @@
 import {FacebookFilled, GoogleCircleFilled, LockOutlined, UserOutlined} from '@ant-design/icons';
-import {Button, Checkbox, Form, Input, Col, Row} from 'antd';
+import {Button, Checkbox, Form, Input, Col, Row, notification} from 'antd';
 import "./style.scss";
 import {Link, useNavigate} from "react-router-dom";
 import AntButton from "../../components/common/Button/index.jsx";
+import {loginUser} from "../../services/auth.service.js";
+import {useDispatch} from "react-redux";
+import {userLoginSuccess} from "../../redux/actions/index.js";
+import {getUserInfo} from "../../redux/actions/user.action.js";
+import {getMe} from "../../services/user.service.js";
 
 const SignIn = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const onFinish = (values) => {
-    console.log('Received values of form: ', values);
+  const onFinish = async (values) => {
+    try {
+      const result = await loginUser(values).then((res) => res);
+      if (result?.status === 201) {
+        dispatch(userLoginSuccess(result?.data?.access_token));
+        try {
+          getMe().then((res) => {
+            dispatch(getUserInfo({
+              ...res?.data?.data,
+              productCart: []
+            }));
+            localStorage.setItem('userInfo', JSON.stringify(res?.data?.data));
+          });
+          navigate("/");
+          notification.success({
+            message: 'Success',
+            description: 'Login successfully!',
+          });
+        } catch (err) {
+          notification.error({
+            message: 'Error',
+            description: "Can't get user information"
+          })
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      notification.error({
+        message: 'Error',
+        description: 'Login failed, try again!',
+      });
+    }
   };
 
   return(
@@ -21,7 +57,7 @@ const SignIn = () => {
           onFinish={onFinish}
         >
           <Form.Item
-            name="username"
+            name="email"
             rules={[{ required: true, message: 'Please type your username!' }]}
           >
             <Input
