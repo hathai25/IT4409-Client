@@ -36,7 +36,6 @@ const Shop = () => {
         Product card: image, name, price, rating, add to cart
         Pagination: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
       */}
-      <h1>Shop</h1>
       <Row>
         {windowSize.width >= SM && (
           <Row style={{width: "100%"}}>

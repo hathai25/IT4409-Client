@@ -26,7 +26,7 @@ const HeaderRight = () => {
       label: (
         <div
           className='menuUserItem'
-          onClick={() => navigate('/profile')}
+          onClick={() => navigate('/my-account')}
         >
           <UserOutlined className='menuUserItem__icon' />
           <span>My account</span>
@@ -85,7 +85,7 @@ const HeaderRight = () => {
                 placement='bottomRight'
                 trigger={['click']}
               >
-                <a onClick={(e) => e.preventDefault()}>
+                <Link onClick={(e) => e.preventDefault()} to={""}>
                   <Space>
                     <span>
                       {avatar ? (
@@ -98,7 +98,7 @@ const HeaderRight = () => {
                       `${username ?? ''}`}
                     <DownOutlined />
                   </Space>
-                </a>
+                </Link>
               </Dropdown>
             ) : (
               <Link to={'/profile'}>
@@ -139,12 +139,10 @@ const HeaderRight = () => {
         )}
         <li className='right-item eicon'>
           <Link to={"/cart"}>
-            <a>
               <ShoppingCartOutlined />
               <div className='amount_product_cart'>
                 <span>{cart ? cart?.length : productCart.length}</span>
               </div>
-            </a>
           </Link>
         </li>
       </ul>
