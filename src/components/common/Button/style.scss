@@ -1,22 +1,23 @@
 .btn{
   &-dark {
     height: 48px;
-    background-color: #000000;
+    background-color: #0b74e5;
     color: #ffffff;
     &:hover {
       background-color: #ffffff !important;
-      color: #000000 !important;
-      border: 1px solid #000000 !important;
+      color: #0b74e5 !important;
+      border: 1px solid #0b74e5 !important;
     }
   }
   &-light {
     height: 48px;
     background-color: #ffffff;
-    color: #000000;
+    color: #0b74e5;
+    border: 1px solid #0b74e5 !important;
     &:hover {
-      background-color: #000000 !important;
+      background-color: #0b74e5 !important;
       color: #ffffff !important;
-      border: 1px solid #ffffff !important;
+      border: 1px solid #0b74e5 !important;
     }
   }
 }

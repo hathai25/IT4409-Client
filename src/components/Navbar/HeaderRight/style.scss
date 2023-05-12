@@ -1,6 +1,6 @@
 .header__right {
   a:visited {
-    color: inherit;
+    color: #0d6efd !important;
   }
   padding: 10px 0;
   ul {
@@ -61,17 +61,17 @@
     .eicon:hover {
       svg {
         path {
-          color: #818a91;
+          color: #0d6efd;
         }
       }
     }
 
     .login-links:hover {
       .login-links__item {
-        color: #006d33;
+        color: #0d6efd;
         svg {
           path {
-            color: #006d33;
+            color: #0d6efd;
           }
         }
       }
@@ -79,10 +79,10 @@
 
     .register-links:hover {
       .login-links__item {
-        color: rgb(179, 135, 58);
+        color: #0d6efd;
         svg {
           path {
-            color: rgb(179, 135, 58);
+            color: #0d6efd;
           }
         }
       }

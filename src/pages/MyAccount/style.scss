@@ -1,0 +1,15 @@
+.account {
+  &-wrapper {
+    //max-width: 1400px;
+    margin: auto;
+  }
+  &-section {
+    max-width: 767px;
+    margin: auto;
+    padding: 0 12px;
+    &-input {
+      height: 48px;
+      border-radius: 20px;
+    }
+  }
+}

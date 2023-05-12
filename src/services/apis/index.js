@@ -8,3 +8,7 @@ export const AUTH_API = {
   REGISTER: '/auth/register',
   GET_ME: '/auth/me',
 }
+
+export const USER_API = {
+  GET_USER_INFO: '/users/profile',
+}

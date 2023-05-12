@@ -5,6 +5,10 @@ import About from "../../pages/About/index.jsx";
 import SignIn from "../../pages/SignIn/index.jsx";
 import SignUp from "../../pages/SignUp/index.jsx";
 import ProductDetail from "../../pages/Shop/[id]/index.jsx";
+import MyAccount from "../../pages/MyAccount/index.jsx";
+import Notifications from "../../pages/Notifications/index.jsx";
+import Orders from "../../pages/Orders/index.jsx";
+import Cart from "../../pages/Cart/index.jsx";
 
 export const MENU = [
   {
@@ -40,5 +44,25 @@ export const MENU = [
     name: '',
     path: '/sign-up',
     element: <SignUp/>
-  }
+  },
+  {
+    name: '',
+    path: '/my-account',
+    element: <MyAccount/>
+  },
+  {
+    name: '',
+    path: '/notifications',
+    element: <Notifications/>
+  },
+  {
+    name: '',
+    path: '/cart',
+    element: <Cart/>
+  },
+  {
+    name: '',
+    path: '/orders',
+    element: <Orders/>
+  },
 ]

@@ -18,7 +18,6 @@ const Contact = () => {
   }
   return (
     <div>
-      <h1>Contact</h1>
       <Row gutter={32}>
         <Col xs={24} md={12}>
           <div className="background">
