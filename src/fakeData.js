@@ -1,3 +1,47 @@
+export const fakeCart =
+  {
+    "id": 19,
+    "products": [
+      {
+        "id": 43,
+        "title": "frock gold printed",
+        "price": 600,
+        "quantity": 3,
+        "total": 1800,
+        "discountPercentage": 15.55,
+        "discountedPrice": 1520,
+        "image": "https://salt.tikicdn.com/cache/750x750/ts/product/b0/11/76/d25177b08600dc5abda90330781061ab.jpg.webp"
+      },
+      {
+        "id": 77,
+        "title": "Rose Ring",
+        "price": 100,
+        "quantity": 3,
+        "total": 300,
+        "discountPercentage": 3.22,
+        "discountedPrice": 290,
+        "image": "https://salt.tikicdn.com/cache/750x750/ts/product/b0/11/76/d25177b08600dc5abda90330781061ab.jpg.webp"
+      },
+      {
+        "id": 50,
+        "title": "Women Shoes",
+        "price": 36,
+        "quantity": 3,
+        "total": 108,
+        "discountPercentage": 16.87,
+        "discountedPrice": 90,
+        "image": "https://salt.tikicdn.com/cache/750x750/ts/product/b0/11/76/d25177b08600dc5abda90330781061ab.jpg.webp"
+      },
+
+    ],
+    "total": 2492,
+    "discountedTotal": 2140,
+    "userId": 5,
+    "totalProducts": 5,
+    "totalQuantity": 14,
+    "image": "https://salt.tikicdn.com/cache/750x750/ts/product/b0/11/76/d25177b08600dc5abda90330781061ab.jpg.webp"
+  }
+
 export const mockProducts = {
   "products": [
     {

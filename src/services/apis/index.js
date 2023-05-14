@@ -12,3 +12,7 @@ export const AUTH_API = {
 export const USER_API = {
   GET_USER_INFO: '/users/profile',
 }
+
+export const CART_API = {
+  GET_CART: '/carts/user/:id',
+}

@@ -8,11 +8,24 @@ import {useWindowSize} from "../../hook/useWindowSize.js";
 import {SM} from "../../constants.js";
 import AntImage from "../common/AntImage/index.jsx";
 import {useEffect, useState} from "react";
+import {addToCart} from "../../services/cart.service.js";
+import {useSelector} from "react-redux";
 
 const { Meta } = Card;
 
 const ProductCard = ({ product }) => {
+  const userId = useSelector((state) => state.userInfo.userId);
   const [loading, setLoading] = useState(true);
+
+  const handleAddToCart = () => {
+    addToCart(userId, [{
+      productId: product?.id,
+      quantity: 1
+    }]).then((res) => {
+      console.log(res);
+    })
+  }
+
   useEffect(() => {
     if (product) setLoading(false);
   }, [product]);
@@ -41,7 +54,13 @@ const ProductCard = ({ product }) => {
                   <p className="card-price">{formatCurrency(product?.price)}</p>
                 </Col>
                 <Col xs={24} sm={12}>
-                  <AntButton style={{width: "100%"}} text={"Add to cart"} theme={"dark"} icon={<ShoppingCartOutlined style={{fontSize: 16}}/>}/>
+                  <AntButton
+                    style={{width: "100%"}}
+                    text={"Add to cart"}
+                    theme={"dark"}
+                    icon={<ShoppingCartOutlined style={{fontSize: 16}}/>}
+                    onClick={handleAddToCart}
+                  />
                 </Col>
               </Row>
             </>
