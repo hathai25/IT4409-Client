@@ -17,7 +17,7 @@ const HeaderRight = () => {
   const token = localStorage.getItem('token');
   const windowSize = useWindowSize();
   const {avatar, username, productCart} = useSelector((state) => state.userInfo);
-  let cart;
+  const cart = useSelector((state) => state.userCart.cart);
   const navigate = useNavigate();
 
   const menu = [

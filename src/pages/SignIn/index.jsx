@@ -17,25 +17,11 @@ const SignIn = () => {
       const result = await loginUser(values).then((res) => res);
       if (result?.status === 201) {
         dispatch(userLoginSuccess(result?.data?.access_token));
-        try {
-          getMe().then((res) => {
-            dispatch(getUserInfo({
-              ...res?.data?.data,
-              productCart: []
-            }));
-            localStorage.setItem('userInfo', JSON.stringify(res?.data?.data));
-          });
-          navigate("/");
-          notification.success({
-            message: 'Success',
-            description: 'Login successfully!',
-          });
-        } catch (err) {
-          notification.error({
-            message: 'Error',
-            description: "Can't get user information"
-          })
-        }
+        notification.success({
+          message: 'Success',
+          description: 'Login successfully!',
+        });
+        navigate("/");
       }
     } catch (error) {
       console.log(error);

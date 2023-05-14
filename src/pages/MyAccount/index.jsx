@@ -12,7 +12,6 @@ const MyAccount = () => {
   const [userInfo, setUserInfo] = useState(null);
 
   const handleUpdateInfo = (values) => {
-    console.log(values)
     const sendData = values?.username !== userInfo?.username ? {
       ...values,
     } : {
@@ -66,7 +65,6 @@ const MyAccount = () => {
           <div className="account-section">
             <h2>Account Information</h2>
             {userInfo && (
-
               <Form
                 form={form}
                 initialValues={{

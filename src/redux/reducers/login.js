@@ -10,8 +10,6 @@ function loginReducer(state = initialState, action) {
       const token = action.payload;
       localStorage.setItem('token', token);
       return { ...state, token };
-    case Actions.RESPONSE_LOGIN:
-      return { ...state, status: action.payload };
     default:
       return { ...state };
   }
