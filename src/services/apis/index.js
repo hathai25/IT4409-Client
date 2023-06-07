@@ -16,3 +16,7 @@ export const USER_API = {
 export const CART_API = {
   GET_CART: '/carts/user/:id',
 }
+
+export const ADDRESS_API = {
+  ADD_ADDRESS: '/users/address',
+}

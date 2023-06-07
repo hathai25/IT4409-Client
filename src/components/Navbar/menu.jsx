@@ -9,6 +9,7 @@ import MyAccount from "../../pages/MyAccount/index.jsx";
 import Notifications from "../../pages/Notifications/index.jsx";
 import Orders from "../../pages/Orders/index.jsx";
 import Cart from "../../pages/Cart/index.jsx";
+import Address from "../../pages/Address/index.jsx";
 
 export const MENU = [
   {
@@ -49,6 +50,11 @@ export const MENU = [
     name: '',
     path: '/my-account',
     element: <MyAccount/>
+  },
+  {
+    name: '',
+    path: '/address',
+    element: <Address/>
   },
   {
     name: '',

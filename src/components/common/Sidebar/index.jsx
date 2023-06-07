@@ -1,7 +1,7 @@
 import {Col, Row} from "antd";
 import {Link, useLocation} from "react-router-dom";
 import './style.scss';
-import {NotificationOutlined, ReadOutlined, ShoppingCartOutlined, UserOutlined} from "@ant-design/icons";
+import {HomeOutlined, NotificationOutlined, ReadOutlined, ShoppingCartOutlined, UserOutlined} from "@ant-design/icons";
 const Sidebar = () => {
   const {pathname} = useLocation();
 
@@ -11,6 +11,13 @@ const Sidebar = () => {
         <Link to={'/my-account'}>
           <p className={`side-link ${pathname === '/my-account' && `side-link-active`}`}>
             <UserOutlined/> My account
+          </p>
+        </Link>
+      </Col>
+      <Col span={24}>
+        <Link to={'/address'}>
+          <p className={`side-link ${pathname === '/address' && `side-link-active`}`}>
+            <HomeOutlined /> Addresses
           </p>
         </Link>
       </Col>
