@@ -1,29 +1,60 @@
-import {Col, Form, Input, Modal, Row} from "antd";
+import {Col, Form, Input, Modal, notification, Row} from "antd";
 import AntButton from "../../../common/Button/index.jsx";
 import { useEffect, useState } from "react";
-import { getUserAddress } from "../../../../services/address.service.js";
+import {addAddress, getUserAddress} from "../../../../services/address.service.js";
 import AddressSelectCard from "../../Address/AddressSelectCard/index.jsx";
+import AddressFormModal from "../../Address/AddressFormModal/index.jsx";
 
 const ShippingInformation = ({userInfo, form}) => {
   const [addressSelected, setAddressSelected] = useState(null)
   const [listAddress, setListAddress] = useState([]);
   const [otherAddressModal, setOtherAddressModal] = useState(false);
+  const [newAddressModal, setNewAddressModal] = useState(false);
 
   const handleOnclickOtherAddress = () => {
     setOtherAddressModal(true);
   }
 
+  const handleOkNewAddress = (values) => {
+    console.log(values);
+    try {
+      addAddress(values).then(res => {
+        console.log(res)
+        if (res.status === 201) {
+          form.setFieldsValue({
+            'phone': values?.phone,
+            'address': values?.detail + ', ' + values?.commune + ', ' + values?.district + ', ' + values?.provice + ', ' + values?.country,
+          })
+          setNewAddressModal(false);
+          notification.success({
+            header: "Success",
+            message: "Add new address successfully!"
+          })
+        } else {
+          notification.error({
+            header: "Error",
+            message: "Add new address failed!"
+          })
+        }
+      })
+    } catch (e) {
+      console.log(e)
+      notification.error({
+        header: "Error",
+        message: "Add new address failed!"
+      })
+    }
+  }
+
   useEffect(() => {
     getUserAddress().then((res) => {
-      console.log(res);
       setListAddress(res?.data?.data?.items);
-      console.log(res?.data?.data?.items[0]);
-      form.setFieldValues({
+      form.setFieldsValue({
         'phone': res?.data?.data?.items[0]?.phone,
-        'address': res?.data?.data?.items[0]?.detail + ', ' + res?.data?.data?.items[0]?.ward + ', ' + res?.data?.data?.items[0]?.district + ', ' + res?.data?.data?.provice + ', ' + res?.data?.data?.items[0]?.country,
+        'address': res?.data?.data?.items[0]?.detail + ', ' + res?.data?.data?.items[0]?.commune + ', ' + res?.data?.data?.items[0]?.district + ', ' + res?.data?.data?.provice + ', ' + res?.data?.data?.items[0]?.country,
       })
     })
-  }, [form])
+  }, [])
 
   console.log(addressSelected)
 
@@ -93,6 +124,7 @@ const ShippingInformation = ({userInfo, form}) => {
                     className={"account-section-input"}
                   />
                   {/* button as link to use other address, onclick popup modal */}
+                </Form.Item>
                   <AntButton
                     type={"link"}
                     className={"account-section-input"}
@@ -103,8 +135,8 @@ const ShippingInformation = ({userInfo, form}) => {
                     type={"link"}
                     className={"account-section-input"}
                     text="New address?"
+                    onClick={() => setNewAddressModal(true)}
                   />
-                </Form.Item>
               </>
             )}
           </Form>
@@ -115,10 +147,10 @@ const ShippingInformation = ({userInfo, form}) => {
           onCancel={() => setOtherAddressModal(false)}
           onOk={() => {
             setOtherAddressModal(false)
-            // form.setFieldsValue({
-            //   'phone': addressSelected?.phone,
-            //   'address': addressSelected?.detail + ', ' + addressSelected?.ward + ', ' + addressSelected?.district + ', ' + addressSelected?.provice + ', ' + addressSelected?.country,
-            // })
+              form.setFieldsValue({
+                'phone': addressSelected?.phone,
+                'address': addressSelected?.detail + ', ' + addressSelected?.ward + ', ' + addressSelected?.district + ', ' + addressSelected?.provice + ', ' + addressSelected?.country,
+              })
           }}
         >
           <Row gutter={[16, 16]}>
@@ -134,6 +166,11 @@ const ShippingInformation = ({userInfo, form}) => {
             ))}
           </Row>
         </Modal>
+        <AddressFormModal
+          visible={newAddressModal}
+          handleCancel={() => setNewAddressModal(false)}
+          handleOk={handleOkNewAddress}
+        />
       </div>
     </Col>
   )

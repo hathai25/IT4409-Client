@@ -39,10 +39,8 @@ const Address = () => {
 
   useEffect(() => {
     getUserAddress().then(res => {
-      console.log(res)
       setAddressList(res?.data?.data?.items)
     })
-
   }, [])
 
   return (
