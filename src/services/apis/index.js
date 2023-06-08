@@ -19,4 +19,5 @@ export const CART_API = {
 
 export const ADDRESS_API = {
   ADD_ADDRESS: '/users/address',
+  GET_USER_ADDRESS: '/users/address',
 }

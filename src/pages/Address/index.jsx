@@ -2,11 +2,14 @@ import {Col, notification, Row} from "antd";
 import Sidebar from "../../components/common/Sidebar/index.jsx";
 import AntButton from "../../components/common/Button/index.jsx";
 import AddressFormModal from "../../components/pages/Address/AddressFormModal/index.jsx";
-import {useState} from "react";
-import {addAddress} from "../../services/address.service.js";
+import {useEffect, useState} from "react";
+import {addAddress, getUserAddress} from "../../services/address.service.js";
+import AddressSelectCard from "../../components/pages/Address/AddressSelectCard/index.jsx";
 
 const Address = () => {
   const [visible, setVisible] = useState(false)
+  const [addressList, setAddressList] = useState([])
+  const [addressSelected, setAddressSelected] = useState()
   const handleSubmitAddress = (values) => {
     console.log(values)
     try {
@@ -33,6 +36,15 @@ const Address = () => {
       })
     }
   }
+
+  useEffect(() => {
+    getUserAddress().then(res => {
+      console.log(res)
+      setAddressList(res?.data?.data?.items)
+    })
+
+  }, [])
+
   return (
     <Row>
       <Col xs={0} md={4}>
@@ -43,6 +55,18 @@ const Address = () => {
           <AntButton text="Add new address" type="primary" style={{marginBottom: '2rem'}}
             onClick={() => setVisible(true)}
           />
+        </Row>
+        <Row gutter={[16, 16]}>
+          {addressList.map((address, index) => (
+            <Col xs={24} md={12} lg={6} key={index}>
+              {/* use antd card */}
+              <AddressSelectCard 
+                address={address}
+                onClick={() => setAddressSelected(address)}
+                selected={addressSelected?._id === address?._id}  
+              />
+            </Col>
+          ))}
         </Row>
       </Col>
       <AddressFormModal

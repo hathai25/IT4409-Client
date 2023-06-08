@@ -15,7 +15,10 @@ const AddressFormModal = ({visible, handleCancel, handleOk}) => {
       onOk={() => {
         form.validateFields()
           .then(values => {
-            handleOk(values)
+            handleOk({
+              ...values,
+              country: "Vietnam",
+            })
             form.resetFields()
           })
       }}
@@ -28,7 +31,7 @@ const AddressFormModal = ({visible, handleCancel, handleOk}) => {
           <>
             <Form.Item
               label={"Full name"}
-              name={"fullName"}
+              name={"fullname"}
               rules={[
                 { required: true, message: "Please input your full name!" }
               ]}
@@ -53,7 +56,7 @@ const AddressFormModal = ({visible, handleCancel, handleOk}) => {
             </Form.Item>
             <Form.Item
               label={"City"}
-              name={"province"}
+              name={"provice"}
               rules={[
                 { required: true, message: "Please select your province!" }
               ]}
@@ -101,7 +104,7 @@ const AddressFormModal = ({visible, handleCancel, handleOk}) => {
               provinceId && districtId &&
               <Form.Item
                 label={"Ward"}
-                name={"ward"}
+                name={"commune"}
                 rules={[
                   {required: true, message: "Please select your ward!"}
                 ]}
