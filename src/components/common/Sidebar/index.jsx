@@ -22,13 +22,6 @@ const Sidebar = () => {
         </Link>
       </Col>
       <Col span={24}>
-        <Link to={'/notifications'}>
-          <p className={`side-link ${pathname === '/notifications' && `side-link-active`}`}>
-            <NotificationOutlined /> Notifications
-          </p>
-        </Link>
-      </Col>
-      <Col span={24}>
         <Link to={'/cart'}>
           <p className={`side-link ${pathname === '/cart' && `side-link-active`}`}>
             <ShoppingCartOutlined /> Cart

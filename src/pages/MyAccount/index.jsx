@@ -1,4 +1,4 @@
-import {Col, Form, Input, notification, Row, Upload} from "antd";
+import {Col, Form, Input, message, notification, Row, Upload} from "antd";
 import Sidebar from "../../components/common/Sidebar/index.jsx";
 import {UserOutlined} from "@ant-design/icons";
 import './style.scss';
@@ -6,12 +6,44 @@ import {useSelector} from "react-redux";
 import AntButton from "../../components/common/Button/index.jsx";
 import {useEffect, useState} from "react";
 import {getUserInfo, updateUserInfo} from "../../services/user.service.js";
+import axios from "axios";
 
 const MyAccount = () => {
   const [form] = Form.useForm();
+  const uploadInstance = axios.create()
+  const handleUpload = (options) => {
+    const { onSuccess, onError, file, onProgress } = options;
+    const formData = new FormData();
+    formData.append('file', file)
+    formData.append("upload_preset", "bxckfvad")
+    try {
+      uploadInstance.post("https://api.cloudinary.com/v1_1/dzazt6bib/image/upload", formData, {
+        onUploadProgress: onProgress,
+      })
+        .then(res => {
+          console.log({res})
+          if (res) {
+            onSuccess(file);
+            const data = res?.data?.url
+            console.log({data})
+            form.setFieldValue("avatar", data)
+            setFileList([{uid: '-1', name: 'image.png', status: 'done', url: data}])
+          } else {
+            onError(`${file.name} file upload failed.`);
+          }
+        })
+    } catch (e) {
+      message.error(`${file.name} tải file thành công.`);
+    }
+  }
+
+
   const [userInfo, setUserInfo] = useState(null);
+  const [fileList, setFileList] = useState([]);
+  const handleChange = ({ fileList: newFileList }) => setFileList(newFileList);
 
   const handleUpdateInfo = (values) => {
+    console.log({values})
     const sendData = values?.username !== userInfo?.username ? {
       ...values,
     } : {
@@ -44,7 +76,11 @@ const MyAccount = () => {
   useEffect(() => {
     try {
       getUserInfo().then((res) => {
+        console.log({res})
         setUserInfo(res?.data?.data);
+        let url = res?.data?.data?.avatar;
+        console.log({url})
+        if (url !== null) setFileList([{uid: '-1', name: 'image.png', status: 'done', url: url}]);
       });
     } catch (err) {
       console.log(err);
@@ -54,6 +90,8 @@ const MyAccount = () => {
       })
     }
   }, []);
+
+
 
   return (
     <div className="account-wrapper">
@@ -78,11 +116,15 @@ const MyAccount = () => {
                 >
                   <Upload
                     listType={"picture-circle"}
-                    fileList={[]}
+                    customRequest={handleUpload}
+                    fileList={fileList}
+                    onChange={handleChange}
                   >
-                    <div>
-                      <UserOutlined style={{fontSize: 32}}/>
-                    </div>
+                    {!fileList[0]?.url &&
+                      <div>
+                       <UserOutlined style={{fontSize: 32}}/>
+                      </div>
+                    }
                   </Upload>
                 </Form.Item>
                 <Form.Item

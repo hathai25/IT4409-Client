@@ -38,7 +38,7 @@ const HeaderRight = () => {
       label: (
         <div
           className='menuUserItem'
-          onClick={() => navigate('/order-history')}
+          onClick={() => navigate('/orders')}
         >
           <ShoppingCartOutlined className='menuUserItem__icon' />
           <span>Order history</span>
