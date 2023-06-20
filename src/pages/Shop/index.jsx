@@ -16,16 +16,40 @@ const Shop = () => {
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
   const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
+  const [category, setCategory] = useState();
+  const [input, setInput] = useState("");
+
+  //filter product with name
+  const [filteredProducts, setFilteredProducts] = useState(products);
+
+  useEffect(() => {
+    setFilteredProducts(
+      products.filter((product) =>
+        product.name.toLowerCase().includes(input.toLowerCase()) && product?.categories[0]?.name?.toLowerCase() === (category?.toLowerCase())
+      )
+    );
+  }, [input,products])
+
+
+  useEffect(() => {
+    setFilteredProducts(
+      products.filter((product) =>
+        product?.categories[0]?.name?.toLowerCase() === (category?.toLowerCase())
+      )
+    );
+  }, [category ,products])
+
+  console.log({filteredProducts})
 
   useEffect(() => {
     try {
       getAllProducts().then((res) => {
-        setProducts(res?.data?.products)
+        setProducts(res?.data?.data?.items)
       })
     } catch (error) {
       console.log({error})
     }
-  }, [])
+  }, [category])
 
   return(
     <div>
@@ -39,11 +63,13 @@ const Shop = () => {
       <Row>
         {windowSize.width >= SM && (
           <Row style={{width: "100%"}}>
-            <Filter/>
+            <Filter input={input} setInput={setInput} category={category} setCategory={setCategory}/>
           </Row>
         )}
         <Row className="shop-products" gutter={windowSize.width >= SM ? [32, 32] : [16, 16]}>
-          {currentProducts.map((product) => (
+          {filteredProducts.length === 0 ? currentProducts.map((product) => (
+            <ProductCard product={product} key={product?.id}/>
+          )) : filteredProducts.map((product) => (
             <ProductCard product={product} key={product?.id}/>
           ))}
         </Row>

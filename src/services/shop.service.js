@@ -6,5 +6,11 @@ export const getAllProducts = async () => {
 }
 
 export const getProductDetail = async (id) => {
-  return instanceCoreApi.get(SHOP_API.GET_PRODUCT_DETAIL.replace(':id', id));
+  return instanceCoreApi.get(SHOP_API.GET_PRODUCT_MEDIAS, {
+    params: {productId: id}
+  });
+}
+
+export const getCategory = async () => {
+  return instanceCoreApi.get(SHOP_API.GET_CATEGORY);
 }

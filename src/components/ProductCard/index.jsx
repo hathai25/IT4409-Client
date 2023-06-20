@@ -1,6 +1,6 @@
 import {Card, Col, Row, Skeleton} from "antd";
 import "./style.scss";
-import {ShoppingCartOutlined} from "@ant-design/icons";
+import {ArrowRightOutlined, ShoppingCartOutlined} from "@ant-design/icons";
 import {formatCurrency} from "../../utils/string.js";
 import {Link} from "react-router-dom";
 import AntButton from "../common/Button/index.jsx";
@@ -11,26 +11,16 @@ import {useEffect, useState} from "react";
 import {addToCart} from "../../services/cart.service.js";
 import {useSelector} from "react-redux";
 
-const { Meta } = Card;
+const {Meta} = Card;
 
-const ProductCard = ({ product }) => {
-  const userId = useSelector((state) => state.userInfo.userId);
+const ProductCard = ({product}) => {
   const [loading, setLoading] = useState(true);
-
-  const handleAddToCart = () => {
-    addToCart(userId, [{
-      productId: product?.id,
-      quantity: 1
-    }]).then((res) => {
-      console.log(res);
-    })
-  }
 
   useEffect(() => {
     if (product) setLoading(false);
   }, [product]);
   const windowSize = useWindowSize();
-  return(
+  return (
     <Col xs={12} xl={6}>
       <Link to={`/shop/product/${product?.id}`} className="card-link">
         <Card
@@ -48,7 +38,7 @@ const ProductCard = ({ product }) => {
         >
           {loading ? <Skeleton/> : (
             <>
-              <Meta title={product?.title} description={<p className="card-desc">{product?.description}</p>}/>
+              <Meta title={product?.name} description={<p className="card-desc">{product?.description}</p>}/>
               <Row style={{marginTop: 16}}>
                 <Col xs={24} sm={12}>
                   <p className="card-price">{formatCurrency(product?.price)}</p>
@@ -56,10 +46,9 @@ const ProductCard = ({ product }) => {
                 <Col xs={24} sm={12}>
                   <AntButton
                     style={{width: "100%"}}
-                    text={"Add to cart"}
+                    text={"View product"}
                     theme={"dark"}
-                    icon={<ShoppingCartOutlined style={{fontSize: 16}}/>}
-                    onClick={handleAddToCart}
+                    icon={<ArrowRightOutlined/>}
                   />
                 </Col>
               </Row>

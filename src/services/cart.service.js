@@ -1,17 +1,21 @@
 import {instanceCoreApi} from "./setupAxios.js";
 import {CART_API} from "./apis/index.js";
 
-export const getUserCart = async (id) => {
-  return instanceCoreApi.get(CART_API.GET_CART.replace(':id', id));
+export const getUserCart = async () => {
+  return instanceCoreApi.get(CART_API.GET_CART);
 }
 
-export const addToCart = async (id, data) => {
-  return instanceCoreApi.put(CART_API.GET_CART.replace(':id', id), {
-    merge: 'true',
-    products: [...data]
+export const addToCart = async (number, itemId) => {
+  return instanceCoreApi.post(CART_API.GET_CART, {
+    number,
+    itemId
   });
 }
 
-export const deleteCart = async (data) => {
-  return instanceCoreApi.delete(CART_API.GET_CART);
+export const updateCart = async (id) => {
+  return instanceCoreApi.patch(CART_API.UPDATE_CART.replace(':id', id));
+}
+
+export const deleteCartItem = async (id) => {
+  return instanceCoreApi.delete(CART_API.UPDATE_CART.replace(':id', id));
 }

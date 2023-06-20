@@ -15,10 +15,9 @@ const ProductDetail = () => {
   useEffect(() => {
     try {
       getProductDetail(id).then((res) => {
+        console.log(res);
         setProduct({
-          ...res?.data,
-          size: ["S", "M", "L", "XL", "XXL"],
-          color: ["red", "green", "blue", "yellow", "black", "white"],
+          ...res?.data?.data,
         })
       })
     } catch (error) {
@@ -30,7 +29,7 @@ const ProductDetail = () => {
     <div>
       <Row>
         <Col xs={24} lg={12}>
-          <ProductGallery images={product?.images}/>
+          <ProductGallery images={product?.medias}/>
         </Col>
         <Col xs={24} lg={12}>
           <ProductInfo product={product}/>

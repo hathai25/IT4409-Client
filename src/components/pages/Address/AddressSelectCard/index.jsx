@@ -4,11 +4,17 @@ import { HomeOutlined } from '@ant-design/icons';
 const AddressSelectCard = ({ address, onClick, selected }) => {
     return (
         <Card
-          title="Address"
+          title={<div style={{
+            display: "flex",
+            justifyContent: "space-between",
+          }}>
+            <p>Address</p>
+            {address?.isDefault && <p style={{color: "#0d6efd"}}>Default</p>}
+          </div>}
           style={{
             width: '100%',
             textAlign: "left",
-            border: selected ? "1px solid #0d6efd" : "1px solid #d9d9d9"
+            border: address?.id === selected?.id ? "1px solid #0d6efd" : "1px solid #d9d9d9",
           }}
             onClick={onClick}
         >

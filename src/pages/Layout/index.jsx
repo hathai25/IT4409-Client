@@ -34,7 +34,8 @@ const Layout = ({children}) => {
           localStorage.setItem('userInfo', JSON.stringify(res?.data?.data));
           try {
             getUserCart(userId).then((res) => {
-              dispatch(getUserCartSuccess(res?.data?.carts[0]?.products));
+              console.log(res)
+              dispatch(getUserCartSuccess(res?.data?.data?.items));
             });
           } catch (err) {
             console.log(err);

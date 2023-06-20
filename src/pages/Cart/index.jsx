@@ -7,7 +7,6 @@ import {
   WalletOutlined
 } from "@ant-design/icons";
 import {useRef, useState} from "react";
-import {fakeCart} from "../../fakeData.js";
 import AntButton from "../../components/common/Button/index.jsx";
 import MyCart from "../../components/pages/Cart/MyCart/index.jsx";
 import "./style.scss"
@@ -15,12 +14,19 @@ import ShippingInformation from "../../components/pages/Cart/ShippingInformation
 import PaymentMethod from "../../components/pages/Cart/PaymentMethod/index.jsx";
 import Done from "../../components/pages/Cart/Done/index.jsx";
 import Spinner from "../../components/common/Spinner/index.jsx";
+import {useDispatch, useSelector} from "react-redux";
+import {createOrder} from "../../services/order.service.js";
+import {getUserCartSuccess} from "../../redux/actions/cart.action.js";
 
-const Cart = ({cart = fakeCart}) => {
+const Cart = () => {
+  const cart = useSelector(state => state.userCart.cart)
   const [selectProduct, setSelectProduct] = useState([])
   const [loading, setLoading] = useState(false)
   const [step, setStep] = useState(0);
   const shippingInfo = useRef();
+  const shippingId = useRef();
+  const dispatch = useDispatch();
+  const totalPrice = useRef();
   const paymentInfo = useRef();
   const [form] = Form.useForm();
   const [formPayment] = Form.useForm();
@@ -43,6 +49,8 @@ const Cart = ({cart = fakeCart}) => {
     },
   ]
 
+  console.log({selectProduct})
+
   return (
     <Row>
       {
@@ -59,12 +67,13 @@ const Cart = ({cart = fakeCart}) => {
           items={stepItems}
           style={{marginBottom: '2rem'}}
         />
-        {step === 0 && <MyCart onSelectProduct={setSelectProduct} cart={fakeCart?.products}/>}
-        {step === 1 && <ShippingInformation form={form} userInfo={JSON.parse(localStorage.getItem('userInfo'))}/>}
+        {step === 0 && <MyCart onSelectProduct={setSelectProduct} cart={cart}/>}
+        {step === 1 && <ShippingInformation shippingId={shippingId} form={form} userInfo={JSON.parse(localStorage.getItem('userInfo'))}/>}
         {step === 2 && <PaymentMethod
           cart={selectProduct}
           shippingInfo={shippingInfo.current}
           form={formPayment}
+          totalPrice={totalPrice}
         />}
         {step === 3 && <Done/>}
         {step < 3 && (
@@ -99,22 +108,42 @@ const Cart = ({cart = fakeCart}) => {
                   formPayment.validateFields().then(() => {
                     paymentInfo.current = formPayment.getFieldsValue()
                     const sendData = {
-                      shippingInfo: shippingInfo.current,
-                      products: selectProduct,
-                      paymentInfo: paymentInfo.current
+                      orderItems: [
+                        ...selectProduct.map(item => {
+                          return {
+                            productAttributeDefault: item?.id,
+                            number: item?.number
+                          }
+                        })
+                      ],
+                      paymentType: paymentInfo.current?.paymentMethod,
+                      address: shippingId.current,
+                      totalMoney: totalPrice.current + 20000,
                     }
                     console.log(sendData)
                     if (sendData) {
                       setLoading(true)
-                      setTimeout(() => {
-                        localStorage.removeItem('rowKey')
-                        setLoading(false)
-                        setStep(step + 1)
-                        notification.success({
-                          message: 'Success',
-                          description: 'Order successfully!',
-                        });
-                      }, 5000)
+                      try {
+                        createOrder(sendData).then(res => {
+                          if (res.status === 201) {
+                            localStorage.removeItem('rowKey')
+                            setLoading(false)
+                            setStep(step + 1)
+                            dispatch(getUserCartSuccess([]))
+                            notification.success({
+                              message: 'Success',
+                              description: 'Order successfully!',
+                            });
+                          } else {
+                            notification.error({
+                              message: 'Error',
+                              description: 'Order failed!',
+                            });
+                          }
+                        })
+                      } catch (e) {
+                        console.log(e)
+                      }
                     }
                   }).catch(() => {})
                 }

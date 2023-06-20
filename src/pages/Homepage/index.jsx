@@ -5,14 +5,6 @@ import Category from "../../components/pages/Homepage/Category/index.jsx";
 import Brands from "../../components/pages/Homepage/Brands/index.jsx";
 import Subscribe from "../../components/pages/Homepage/Subscribe/index.jsx";
 
-const contentStyle = {
-  height: '400px',
-  color: '#fff',
-  lineHeight: '400px',
-  textAlign: 'center',
-  background: '#364d79',
-};
-
 const Homepage = () => {
   return (
     <div>

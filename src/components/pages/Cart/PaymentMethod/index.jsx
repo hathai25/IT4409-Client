@@ -1,11 +1,13 @@
-import {Button, Card, Col, Form, Input, InputNumber, Popconfirm, Radio, Row, Space, Table} from "antd";
+import {Button, Card, Col, Form, Input, InputNumber, Popconfirm, Radio, Row, Space, Table, Tag} from "antd";
 import AntImage from "../../../common/AntImage/index.jsx";
 import {formatCurrency} from "../../../../utils/string.js";
 import {BankOutlined, DeleteFilled, HomeOutlined, MoneyCollectOutlined} from "@ant-design/icons";
 import {useState} from "react";
 
-const PaymentMethod = ({cart, shippingInfo, form}) => {
-  const subTotal = cart?.reduce((acc, cur) => acc + cur?.price * cur?.quantity, 0);
+const PaymentMethod = ({cart, shippingInfo, form, totalPrice}) => {
+  totalPrice.current = cart?.reduce((acc, cur) => {
+    return acc + cur?.itemId?.productDetailId?.productId.price * cur?.number
+  }, 0);
   return (
     <Row gutter={32}>
       <Col span={16}>
@@ -24,7 +26,7 @@ const PaymentMethod = ({cart, shippingInfo, form}) => {
                 <Row gutter={32}>
                   <Col>
                     <AntImage
-                      src={record?.image}
+                      src={record?.itemId?.mediaId}
                       width={160}
                       height={160}
                     />
@@ -35,8 +37,8 @@ const PaymentMethod = ({cart, shippingInfo, form}) => {
                       justifyContent: "center",
                       alignItems: "center",
                       height: "100%",
-                      margin: 0
-                    }}>{record?.title}</p>
+                      margin: "10px 0"
+                    }}>{record?.itemId?.productDetailId?.productId?.name} - <Tag style={{marginLeft: 4}}>{record?.itemId?.size.toUpperCase()}</Tag> - <Tag style={{marginLeft: 4}} color={record?.itemId?.color}>{record?.itemId?.color}</Tag></p>
                   </Col>
                 </Row>
               )
@@ -47,7 +49,7 @@ const PaymentMethod = ({cart, shippingInfo, form}) => {
               key: 'price',
               align: "center",
               render: (text, record) => (
-                <p>{formatCurrency(record?.price)}</p>
+                <p>{formatCurrency(record?.itemId?.productDetailId?.productId?.price)}</p>
               )
             },
             {
@@ -55,6 +57,9 @@ const PaymentMethod = ({cart, shippingInfo, form}) => {
               dataIndex: 'quantity',
               key: 'quantity',
               align: "center",
+              render: (text, record) => (
+                <p>{record?.number}</p>
+              )
             },
             {
               title: 'Subtotal',
@@ -62,7 +67,7 @@ const PaymentMethod = ({cart, shippingInfo, form}) => {
               key: 'total',
               align: "center",
               render: (text, record) => (
-                <p>{formatCurrency(record?.price * record?.quantity)}</p>
+                <p>{formatCurrency(record?.itemId?.productDetailId?.productId?.price * record?.number)}</p>
               )
             },
           ]}
@@ -89,8 +94,8 @@ const PaymentMethod = ({cart, shippingInfo, form}) => {
             >
               <Radio.Group>
                 <Space direction="vertical">
-                  <Radio value={"cod"}><MoneyCollectOutlined/> Cash on delivery</Radio>
-                  <Radio value={"momo"}><BankOutlined/> Pay via Momo</Radio>
+                  <Radio value={"cash"}><MoneyCollectOutlined/> Cash on delivery</Radio>
+                  <Radio value={"vnpay"}><BankOutlined/>VN Pay</Radio>
                 </Space>
               </Radio.Group>
             </Form.Item>
@@ -116,14 +121,14 @@ const PaymentMethod = ({cart, shippingInfo, form}) => {
             textAlign: "left"
           }}
         >
-          <h3><span>Sub total: </span> <span style={{color: "#0d6efd", float: "right"}}>{formatCurrency(subTotal)}</span></h3>
+          <h3><span>Sub total: </span> <span style={{color: "#0d6efd", float: "right"}}>{formatCurrency(totalPrice.current)}</span></h3>
           <p
             style={{
               paddingBottom: "1rem",
               borderBottom: " 1px solid #d9d9d9",
               }}
-          >Shipping: <span style={{color: "#0d6efd", float: "right"}}>{formatCurrency(20)}</span></p>
-          <h3>Total: <span style={{color: "#0d6efd", float: "right"}}>{formatCurrency(subTotal + 20)}</span></h3>
+          >Shipping: <span style={{color: "#0d6efd", float: "right"}}>{formatCurrency(20000)}</span></p>
+          <h3>Total: <span style={{color: "#0d6efd", float: "right"}}>{formatCurrency(totalPrice.current + 20000)}</span></h3>
         </Card>
       </Col>
     </Row>

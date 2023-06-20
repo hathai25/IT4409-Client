@@ -25,6 +25,7 @@ const addInterceptor = (instant) => {
     async (response) => {
       const {code} = response
       if (code === 401 || (code === 500 && !response.config.headers.Authorization)) {
+        localStorage.clear()
         notification.error({
           message: 'Phiên đăng nhập hết hạn',
           description: 'Vui lòng đăng nhập lại',
@@ -34,10 +35,12 @@ const addInterceptor = (instant) => {
     },
     (err) => {
       if (err.response?.status === 401) {
+        localStorage.clear()
         notification.error({
           message: 'Phiên đăng nhập hết hạn',
           description: 'Vui lòng đăng nhập lại',
         })
+        window.location.href = '/sign-in'
       }
       return Promise.reject(err)
     }

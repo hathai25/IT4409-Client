@@ -5,7 +5,7 @@ import {addAddress, getUserAddress} from "../../../../services/address.service.j
 import AddressSelectCard from "../../Address/AddressSelectCard/index.jsx";
 import AddressFormModal from "../../Address/AddressFormModal/index.jsx";
 
-const ShippingInformation = ({userInfo, form}) => {
+const ShippingInformation = ({userInfo, form, shippingId}) => {
   const [addressSelected, setAddressSelected] = useState(null)
   const [listAddress, setListAddress] = useState([]);
   const [otherAddressModal, setOtherAddressModal] = useState(false);
@@ -16,7 +16,6 @@ const ShippingInformation = ({userInfo, form}) => {
   }
 
   const handleOkNewAddress = (values) => {
-    console.log(values);
     try {
       addAddress(values).then(res => {
         console.log(res)
@@ -50,9 +49,10 @@ const ShippingInformation = ({userInfo, form}) => {
     getUserAddress().then((res) => {
       setListAddress(res?.data?.data?.items);
       form.setFieldsValue({
-        'phone': res?.data?.data?.items[0]?.phone,
-        'address': res?.data?.data?.items[0]?.detail + ', ' + res?.data?.data?.items[0]?.commune + ', ' + res?.data?.data?.items[0]?.district + ', ' + res?.data?.data?.provice + ', ' + res?.data?.data?.items[0]?.country,
+        'phone': res?.data?.data?.items.find(e => e?.isDefault === true).phone,
+        'address': res?.data?.data?.items.find(e => e?.isDefault === true)?.detail + ', ' + res?.data?.data?.items.find(e => e?.isDefault === true)?.commune + ', ' + res?.data?.data?.items.find(e => e?.isDefault === true)?.district + ', ' + res?.data?.data.items.find(e => e?.isDefault === true)?.provice + ', ' + res?.data?.data?.items.find(e => e?.isDefault === true)?.country,
       })
+      shippingId.current = res?.data?.data?.items.find(e => e?.isDefault === true)?.id
     })
   }, [])
 

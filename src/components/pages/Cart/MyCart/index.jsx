@@ -1,17 +1,48 @@
-import {Button, Col, InputNumber, Popconfirm, Row, Table} from "antd";
+import {Button, Col, InputNumber, message, notification, Popconfirm, Row, Table, Tag} from "antd";
 import AntImage from "../../../common/AntImage/index.jsx";
 import {formatCurrency} from "../../../../utils/string.js";
 import {DeleteFilled} from "@ant-design/icons";
 import {useState} from "react";
+import {deleteCartItem, getUserCart} from "../../../../services/cart.service.js";
+import {getUserCartSuccess} from "../../../../redux/actions/cart.action.js";
+import {useDispatch} from "react-redux";
 
 const MyCart = ({cart, onSelectProduct}) => {
+  const userId = JSON.parse(localStorage.getItem("userInfo"))?.userId;
+  const dispatch = useDispatch();
   const rowSelection = {
-    selectedRowKeys: localStorage.getItem('rowKey') ? JSON.parse(localStorage.getItem('rowKey')) : [],
+    // selectedRowKeys: localStorage.getItem('rowKey') ? JSON.parse(localStorage.getItem('rowKey')) : [],
     onChange: (key, data) => {
       onSelectProduct(data);
       localStorage.setItem('rowKey', JSON.stringify(key));
     },
   };
+
+  const handleDeleteCartItem = (id) => {
+    try {
+      deleteCartItem(id).then((res) => {
+        if (res?.status === 200) {
+          message.success('Delete cart item successfully');
+          try {
+            getUserCart(userId).then((res) => {
+              dispatch(getUserCartSuccess(res?.data?.data?.items));
+            });
+          } catch (err) {
+            console.log(err);
+            notification.error({
+              message: 'Error',
+              description: "Can't get user cart!"
+            });
+          }
+        } else {
+          message.error('Delete cart item failed');
+        }
+      })
+    } catch (error) {
+      console.log({error})
+    }
+  }
+
   return (
     <Table
       rowKey={(record) => record?.id}
@@ -25,44 +56,45 @@ const MyCart = ({cart, onSelectProduct}) => {
           key: 'title',
           width: 450,
           align: "center",
-          render: (text, record) => (
-            <Row gutter={32}>
-              <Col>
-                <AntImage
-                  src={record?.image}
-                  width={160}
-                  height={160}
-                />
-              </Col>
-              <Col>
-                <p style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  height: "100%",
-                  margin: 0
-                }}>{record?.title}</p>
-              </Col>
-            </Row>
-          )
+          render: (text, record) => {
+            return (
+              <Row gutter={32}>
+                <Col>
+                  <AntImage
+                    src={record?.itemId?.mediaId}
+                    width={160}
+                    height={160}
+                  />
+                </Col>
+                <Col>
+                  <p style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    height: "100%",
+                    margin: "10px 0"
+                  }}>{record?.itemId?.productDetailId?.productId?.name} - <Tag style={{marginLeft: 4}}>{record?.itemId?.size.toUpperCase()}</Tag> - <Tag style={{marginLeft: 4}} color={record?.itemId?.color}>{record?.itemId?.color}</Tag></p>
+                </Col>
+              </Row>)
+          }
         },
         {
           title: 'Price',
           dataIndex: 'price',
           key: 'price',
           render: (text, record) => (
-            <p>{formatCurrency(record?.price)}</p>
+            <p>{formatCurrency(record?.itemId?.productDetailId?.productId?.price)}</p>
           )
         },
         {
           title: 'Quantity',
           dataIndex: 'quantity',
           key: 'quantity',
-          render: (quantity) => (
+          render: (quantity, record) => (
             <InputNumber
               min={1}
               max={10}
-              defaultValue={quantity}
+              defaultValue={record?.number}
               onChange={(value) => console.log(value)}
             />
           )
@@ -72,7 +104,7 @@ const MyCart = ({cart, onSelectProduct}) => {
           dataIndex: 'total',
           key: 'total',
           render: (text, record) => (
-            <p>{formatCurrency(record?.price * record?.quantity)}</p>
+            <p>{formatCurrency(record?.itemId?.productDetailId?.productId?.price * record?.number)}</p>
           )
         },
         {
@@ -84,9 +116,7 @@ const MyCart = ({cart, onSelectProduct}) => {
             return (
               <Popconfirm
                 title='Are you sure ?'
-                onConfirm={() => console.log('delete')
-                  // handleDeleteItem(r.id, r.type_id, r.report_id)
-                }
+                onConfirm={() => handleDeleteCartItem(r?.id)}
                 okText='Yes'
                 cancelText='Cancel'
                 placement='topRight'

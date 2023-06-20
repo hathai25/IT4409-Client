@@ -14,3 +14,6 @@ export const addAddress = (data) => {
   })
 }
 
+export const setDefaultAddress = (id) => {
+  return instanceCoreApi.patch(ADDRESS_API.SET_DEFAULT_ADDRESS.replace(':id', id))
+}

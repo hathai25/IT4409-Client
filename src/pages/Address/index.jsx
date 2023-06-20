@@ -3,7 +3,7 @@ import Sidebar from "../../components/common/Sidebar/index.jsx";
 import AntButton from "../../components/common/Button/index.jsx";
 import AddressFormModal from "../../components/pages/Address/AddressFormModal/index.jsx";
 import {useEffect, useState} from "react";
-import {addAddress, getUserAddress} from "../../services/address.service.js";
+import {addAddress, getUserAddress, setDefaultAddress} from "../../services/address.service.js";
 import AddressSelectCard from "../../components/pages/Address/AddressSelectCard/index.jsx";
 
 const Address = () => {
@@ -11,16 +11,15 @@ const Address = () => {
   const [addressList, setAddressList] = useState([])
   const [addressSelected, setAddressSelected] = useState()
   const handleSubmitAddress = (values) => {
-    console.log(values)
     try {
       addAddress(values).then(res => {
-        console.log(res)
         if (res.status === 201) {
           setVisible(false)
           notification.success({
             header: "Success",
             message: "Add new address successfully!"
           })
+          fetchAddress()
         } else {
           notification.error({
             header: "Error",
@@ -37,10 +36,35 @@ const Address = () => {
     }
   }
 
-  useEffect(() => {
+  const handleSetAddressDefault = () => {
+    try {
+      setDefaultAddress(addressSelected?.id).then(res => {
+        if (res.status === 200) {
+          notification.success({
+            header: "Success",
+            message: "Set default address successfully!"
+          })
+          fetchAddress()
+        } else {
+          notification.error({
+            header: "Error",
+            message: "Set default address failed!"
+          })
+        }
+      })
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  const fetchAddress = () => {
     getUserAddress().then(res => {
       setAddressList(res?.data?.data?.items)
     })
+  }
+
+  useEffect(() => {
+    fetchAddress()
   }, [])
 
   return (
@@ -49,9 +73,12 @@ const Address = () => {
         <Sidebar/>
       </Col>
       <Col xs={24} md={20} style={{padding: '2rem'}}>
-        <Row>
+        <Row justify={"space-between"}>
           <AntButton text="Add new address" type="primary" style={{marginBottom: '2rem'}}
             onClick={() => setVisible(true)}
+          />
+          <AntButton text="Use as default address" theme="light" style={{marginBottom: '2rem'}}
+                     onClick={handleSetAddressDefault}
           />
         </Row>
         <Row gutter={[16, 16]}>
@@ -61,7 +88,7 @@ const Address = () => {
               <AddressSelectCard 
                 address={address}
                 onClick={() => setAddressSelected(address)}
-                selected={addressSelected?._id === address?._id}  
+                selected={addressSelected}
               />
             </Col>
           ))}

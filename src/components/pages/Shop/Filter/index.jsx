@@ -2,12 +2,29 @@ import "./style.scss";
 import {Col, Form, Input, Row, Select} from "antd";
 import AntButton from "../../../common/Button/index.jsx";
 import {FilterOutlined, SearchOutlined, SortAscendingOutlined} from "@ant-design/icons";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import {getCategory} from "../../../../services/shop.service.js";
 
-const Filter = () => {
-  const [input, setInput] = useState("");
-  const [category, setCategory] = useState("");
+const Filter = ({input, setInput, category, setCategory}) => {
   const [sort, setSort] = useState("Newest to lowest");
+  const [selectCategory, setSelectCategory] = useState();
+
+  useEffect(() => {
+    try {
+      getCategory().then((res) => {
+        if (res?.status === 200) {
+          setSelectCategory(res?.data?.data?.items);
+        }
+        else {
+          setSelectCategory([]);
+        }
+      })
+    } catch (e) {
+      console.log(e);
+    }
+  }, [])
+
+
   return (
     <Row gutter={16} className="filter-container" justify="space-between">
       {/*Filter: by category, by price, by , search*/}
@@ -19,10 +36,8 @@ const Filter = () => {
           size={"large"}
           style={{marginRight: 10}}
           onChange={(value) => setCategory(value)}
+          options={selectCategory?.map((item) => ({label: item?.name, value: item?.name}))}
         >
-          <Select.Option value="men">Men</Select.Option>
-          <Select.Option value="women">Women</Select.Option>
-          <Select.Option value="best-seller">Best Seller</Select.Option>
         </Select>
         <AntButton text={"Search"} icon={<SearchOutlined/>} size={"large"} style={{marginRight: 10}}/>
         <AntButton
