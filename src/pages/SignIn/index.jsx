@@ -69,17 +69,17 @@ const SignIn = () => {
             </Link>
           </div>
           <AntButton text={"Log in"} htmlType="submit" theme={'dark'} style={{width: "100%", borderRadius: 20}}/>
-          <div className="login-other">
-            Or sign in with
-            <div>
-              <Button>
-                <GoogleCircleFilled style={{fontSize: 24}}/>
-              </Button>
-              <Button>
-                <FacebookFilled  style={{fontSize: 24}}/>
-              </Button>
-            </div>
-          </div>
+          {/*<div className="login-other">*/}
+          {/*  Or sign in with*/}
+          {/*  <div>*/}
+          {/*    <Button>*/}
+          {/*      <GoogleCircleFilled style={{fontSize: 24}}/>*/}
+          {/*    </Button>*/}
+          {/*    <Button>*/}
+          {/*      <FacebookFilled  style={{fontSize: 24}}/>*/}
+          {/*    </Button>*/}
+          {/*  </div>*/}
+          {/*</div>*/}
           <div className="login-forgot-password">
             Don't have an account?
           </div>

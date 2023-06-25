@@ -9,8 +9,10 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/autoplay";
 import "./style.scss";
+import {useNavigate} from "react-router-dom";
 
 const Category = () => {
+  const navigate = useNavigate();
   return (
     <div style={{marginBottom: 48}}>
       <h2 style={{textAlign: "left"}}>Category</h2>
@@ -53,6 +55,9 @@ const Category = () => {
                     transform: 'translate(-50%, -50%)',
                     width: '60%',
                     height: '40px',
+                  }}
+                  onClick={() => {
+                    navigate("/shop")
                   }}
                 >
                   {item?.title}

@@ -2,16 +2,17 @@ import {Button, Col, InputNumber, message, notification, Popconfirm, Row, Table,
 import AntImage from "../../../common/AntImage/index.jsx";
 import {formatCurrency} from "../../../../utils/string.js";
 import {DeleteFilled} from "@ant-design/icons";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {deleteCartItem, getUserCart} from "../../../../services/cart.service.js";
 import {getUserCartSuccess} from "../../../../redux/actions/cart.action.js";
 import {useDispatch} from "react-redux";
+import Spinner from "../../../common/Spinner/index.jsx";
 
 const MyCart = ({cart, onSelectProduct}) => {
+  const [loading, setLoading] = useState(true);
   const userId = JSON.parse(localStorage.getItem("userInfo"))?.userId;
   const dispatch = useDispatch();
   const rowSelection = {
-    // selectedRowKeys: localStorage.getItem('rowKey') ? JSON.parse(localStorage.getItem('rowKey')) : [],
     onChange: (key, data) => {
       onSelectProduct(data);
       localStorage.setItem('rowKey', JSON.stringify(key));
@@ -43,8 +44,12 @@ const MyCart = ({cart, onSelectProduct}) => {
     }
   }
 
+  useEffect(() => {
+    if (cart && cart?.length >= 0) setLoading(false);
+  }, [cart]);
+
   return (
-    <Table
+    loading ? <div style={{height: 500}}><Spinner/></div> : <Table
       rowKey={(record) => record?.id}
       dataSource={cart}
       pagination={false}

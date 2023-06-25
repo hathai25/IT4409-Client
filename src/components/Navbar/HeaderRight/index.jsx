@@ -51,6 +51,7 @@ const HeaderRight = () => {
         <div className='menuUserItem' onClick={() => {
           dispatch(userLoginSuccess(null));
           localStorage.clear();
+          window.location.href="/";
           notification.success({
             message: 'Success',
             description: 'Logout successfully!',

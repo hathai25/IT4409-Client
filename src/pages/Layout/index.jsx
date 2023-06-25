@@ -21,9 +21,16 @@ const Layout = ({children}) => {
     {title: "Home", href: "/"},
     ...MAP_PATHNAME_TO_BREADCRUMB.filter(item => item.href === pathname)
   ]
+  const isValidToken = token => {
+    if (!token) return false;
+    const payload = token?.split(".")[1];
+    const decodedPayload = atob(payload);
+    const {exp} = JSON.parse(decodedPayload);
+    return Date.now() <= exp*1000;
+  }
 
   useEffect(() => {
-    if (token) {
+    if (isValidToken(token)) {
       try {
         getMe().then((res) => {
           dispatch(getUserInfo({
@@ -46,12 +53,13 @@ const Layout = ({children}) => {
           }
         });
       } catch (err) {
-        console.log(err);
         notification.error({
           message: 'Error',
           description: "Can't get user information"
         });
       }
+    } else {
+      localStorage.clear();
     }
   }, [dispatch, token])
 
@@ -59,7 +67,7 @@ const Layout = ({children}) => {
     <div>
       <Navbar/>
       <div className="container">
-        {pathname !== "/" && (
+        {pathname !== "/" && pathname !== "/sign-in" && pathname !== "/sign-up" && (
           <Breadcrumb
             separator={">"}
             items={breadCrumbItems}

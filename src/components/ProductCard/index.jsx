@@ -32,7 +32,7 @@ const ProductCard = ({product}) => {
               alt={product?.title}
               src={product?.thumbnail}
               width={"100%"}
-              height={windowSize.width >= SM ? "320px" : "160px"}
+              height={"100%"}
             />
           }
         >

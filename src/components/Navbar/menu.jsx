@@ -10,6 +10,7 @@ import Notifications from "../../pages/Notifications/index.jsx";
 import Orders from "../../pages/Orders/index.jsx";
 import Cart from "../../pages/Cart/index.jsx";
 import Address from "../../pages/Address/index.jsx";
+import PaymentSuccess from "../../pages/PaymentSuccess/index.jsx";
 
 export const MENU = [
   {
@@ -70,5 +71,10 @@ export const MENU = [
     name: '',
     path: '/orders',
     element: <Orders/>
+  },
+  {
+    name: '',
+    path: '/cart/payment-success',
+    element: <PaymentSuccess/>
   },
 ]

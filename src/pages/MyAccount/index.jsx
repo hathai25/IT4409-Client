@@ -7,6 +7,9 @@ import AntButton from "../../components/common/Button/index.jsx";
 import {useEffect, useState} from "react";
 import {getUserInfo, updateUserInfo} from "../../services/user.service.js";
 import axios from "axios";
+import useCallApi from "../../hook/useCallApi.js";
+import {getAllSliders} from "../../services/slider.service.js";
+import Spinner from "../../components/common/Spinner/index.jsx";
 
 const MyAccount = () => {
   const [form] = Form.useForm();
@@ -15,7 +18,7 @@ const MyAccount = () => {
     const { onSuccess, onError, file, onProgress } = options;
     const formData = new FormData();
     formData.append('file', file)
-    formData.append("upload_preset", "bxckfvad")
+    formData.append("upload_preset", import.meta.env.VITE_CLOUDINARY_PRESET)
     try {
       uploadInstance.post("https://api.cloudinary.com/v1_1/dzazt6bib/image/upload", formData, {
         onUploadProgress: onProgress,
@@ -57,6 +60,7 @@ const MyAccount = () => {
             message: 'Success',
             description: 'Update successfully!',
           });
+          fetchUserInfo()
         } else {
           notification.error({
             message: 'Error',
@@ -73,22 +77,23 @@ const MyAccount = () => {
     }
   }
 
-  useEffect(() => {
-    try {
-      getUserInfo().then((res) => {
-        console.log({res})
-        setUserInfo(res?.data?.data);
-        let url = res?.data?.data?.avatar;
-        console.log({url})
-        if (url !== null) setFileList([{uid: '-1', name: 'image.png', status: 'done', url: url}]);
-      });
-    } catch (err) {
-      console.log(err);
+  const { send: fetchUserInfo, loading } = useCallApi({
+    callApi: getUserInfo,
+    success: (res) => {
+      setUserInfo(res?.data)
+      let url = res?.data?.avatar;
+      if (url !== null) setFileList([{uid: '-1', name: 'image.png', status: 'done', url: url}]);
+    },
+    error: () => {
       notification.error({
         message: 'Error',
         description: "Can't get user information"
       })
     }
+  })
+
+  useEffect(() => {
+    fetchUserInfo()
   }, []);
 
 
@@ -102,7 +107,7 @@ const MyAccount = () => {
         <Col xs={24} md={20}>
           <div className="account-section">
             <h2>Account Information</h2>
-            {userInfo && (
+            {loading ? <div style={{height: 600}}><Spinner/></div> : (
               <Form
                 form={form}
                 initialValues={{

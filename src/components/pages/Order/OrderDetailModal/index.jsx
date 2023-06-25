@@ -3,32 +3,29 @@ import AntImage from "../../../common/AntImage/index.jsx";
 import {getOrderByDetail} from "../../../../services/order.service.js";
 import {useEffect, useState} from "react";
 import {formatCurrency} from "../../../../utils/string.js";
+import useCallApi from "../../../../hook/useCallApi.js";
+import Spinner from "../../../common/Spinner/index.jsx";
 
 const OrderDetailModal = ({ order_id, showModal, handleCancel }) => {
   const [orders, setOrders] = useState()
-  const fetchOrderDetail = () => {
-    try {
-      getOrderByDetail(order_id).then(res => {
-        if (res?.status === 200) {
-          console.log(res?.data?.data)
-          setOrders(res?.data?.data)
-        } else {
-          notification.error({
-            header: "Error",
-            message: "Get orders failed!"
-          })
-        }
+
+  const { send: fetchOrderDetail, loading} = useCallApi({
+    callApi: getOrderByDetail,
+    success: (res) => {
+      setOrders(res?.data)
+    },
+    error: (e) => {
+      notification.error({
+        header: "Error",
+        message: "Get order failed!"
       })
-    } catch (e) {
-      console.log(e)
     }
-  }
+  })
 
   useEffect(() => {
-    fetchOrderDetail()
+    if (order_id) fetchOrderDetail(order_id)
   }, [order_id])
 
-  console.log({showModal})
 
   return(
     <Modal
@@ -38,7 +35,7 @@ const OrderDetailModal = ({ order_id, showModal, handleCancel }) => {
       onOk={handleCancel}
       width={1000}
     >
-      {orders && <Row span={24}>
+      {loading ? <div style={{height: 150}}><Spinner/></div> : <Row span={24}>
         {orders?.orderItems?.map(order => (
           <Col span={24} style={{marginBottom: "1rem"}}>
             <Row>

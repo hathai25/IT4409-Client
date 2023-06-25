@@ -5,6 +5,8 @@ import AddressFormModal from "../../components/pages/Address/AddressFormModal/in
 import {useEffect, useState} from "react";
 import {addAddress, getUserAddress, setDefaultAddress} from "../../services/address.service.js";
 import AddressSelectCard from "../../components/pages/Address/AddressSelectCard/index.jsx";
+import useCallApi from "../../hook/useCallApi.js";
+import Spinner from "../../components/common/Spinner/index.jsx";
 
 const Address = () => {
   const [visible, setVisible] = useState(false)
@@ -57,11 +59,19 @@ const Address = () => {
     }
   }
 
-  const fetchAddress = () => {
-    getUserAddress().then(res => {
-      setAddressList(res?.data?.data?.items)
-    })
-  }
+  const { send: fetchAddress, loading } = useCallApi({
+    callApi: getUserAddress,
+    success: (res) => {
+      console.log(res)
+      setAddressList(res?.data?.items)
+    },
+    error: (err) => {
+      notification.error({
+        message: "Error",
+        description: "Something went wrong"
+      })
+    }
+  })
 
   useEffect(() => {
     fetchAddress()
@@ -78,21 +88,22 @@ const Address = () => {
             onClick={() => setVisible(true)}
           />
           <AntButton text="Use as default address" theme="light" style={{marginBottom: '2rem'}}
-                     onClick={handleSetAddressDefault}
+                     onClick={handleSetAddressDefault} disabled={addressSelected?.isDefault}
           />
         </Row>
-        <Row gutter={[16, 16]}>
-          {addressList.map((address, index) => (
-            <Col xs={24} md={12} lg={6} key={index}>
-              {/* use antd card */}
-              <AddressSelectCard 
-                address={address}
-                onClick={() => setAddressSelected(address)}
-                selected={addressSelected}
-              />
-            </Col>
-          ))}
-        </Row>
+        {loading ? <div style={{height: 500}}><Spinner/></div> : (
+          <Row gutter={[16, 16]}>
+            {addressList.map((address, index) => (
+              <Col xs={24} md={12} lg={6} key={index}>
+                <AddressSelectCard
+                  address={address}
+                  onClick={() => setAddressSelected(address)}
+                  selected={addressSelected}
+                />
+              </Col>
+            ))}
+          </Row>
+        )}
       </Col>
       <AddressFormModal
         visible={visible}

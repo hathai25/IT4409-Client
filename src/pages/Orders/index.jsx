@@ -37,7 +37,7 @@ const Orders = () => {
         <Sidebar/>
       </Col>
       <Col xs={24} md={20}>
-        <Tabs defaultActiveKey="1" items={items} />;
+        <Tabs defaultActiveKey="1" items={items} />
       </Col>
     </Row>
   );

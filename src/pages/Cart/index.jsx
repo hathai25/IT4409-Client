@@ -1,4 +1,4 @@
-import {Col, Form, Modal, notification, Row, Steps} from "antd";
+import {Col, Form, notification, Row, Steps} from "antd";
 import Sidebar from "../../components/common/Sidebar/index.jsx";
 import {
   ShoppingCartOutlined,
@@ -14,9 +14,9 @@ import ShippingInformation from "../../components/pages/Cart/ShippingInformation
 import PaymentMethod from "../../components/pages/Cart/PaymentMethod/index.jsx";
 import Done from "../../components/pages/Cart/Done/index.jsx";
 import Spinner from "../../components/common/Spinner/index.jsx";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {createOrder} from "../../services/order.service.js";
-import {getUserCartSuccess} from "../../redux/actions/cart.action.js";
+import {getVnpayUrl} from "../../services/payment.service.js";
 
 const Cart = () => {
   const cart = useSelector(state => state.userCart.cart)
@@ -25,7 +25,6 @@ const Cart = () => {
   const [step, setStep] = useState(0);
   const shippingInfo = useRef();
   const shippingId = useRef();
-  const dispatch = useDispatch();
   const totalPrice = useRef();
   const paymentInfo = useRef();
   const [form] = Form.useForm();
@@ -49,13 +48,11 @@ const Cart = () => {
     },
   ]
 
-  console.log({selectProduct})
-
   return (
     <Row>
       {
         step === 2 && loading && (
-          <Spinner/>
+          <div style={{zIndex: 99}}><Spinner/></div>
         )
       }
       <Col xs={0} md={4}>
@@ -68,7 +65,8 @@ const Cart = () => {
           style={{marginBottom: '2rem'}}
         />
         {step === 0 && <MyCart onSelectProduct={setSelectProduct} cart={cart}/>}
-        {step === 1 && <ShippingInformation shippingId={shippingId} form={form} userInfo={JSON.parse(localStorage.getItem('userInfo'))}/>}
+        {step === 1 && <ShippingInformation shippingId={shippingId} form={form}
+                                            userInfo={JSON.parse(localStorage.getItem('userInfo'))}/>}
         {step === 2 && <PaymentMethod
           cart={selectProduct}
           shippingInfo={shippingInfo.current}
@@ -111,7 +109,7 @@ const Cart = () => {
                       orderItems: [
                         ...selectProduct.map(item => {
                           return {
-                            productAttributeDefault: item?.id,
+                            productAttributeDefault: item?.itemId?.id,
                             number: item?.number
                           }
                         })
@@ -120,7 +118,6 @@ const Cart = () => {
                       address: shippingId.current,
                       totalMoney: totalPrice.current + 20000,
                     }
-                    console.log(sendData)
                     if (sendData) {
                       setLoading(true)
                       try {
@@ -128,12 +125,21 @@ const Cart = () => {
                           if (res.status === 201) {
                             localStorage.removeItem('rowKey')
                             setLoading(false)
-                            setStep(step + 1)
-                            dispatch(getUserCartSuccess([]))
-                            notification.success({
-                              message: 'Success',
-                              description: 'Order successfully!',
-                            });
+                            if (sendData?.paymentType === 'cash') {
+                              setStep(step + 1)
+                              notification.success({
+                                message: 'Success',
+                                description: 'Order successfully!',
+                              });
+                            } else {
+                              const amount = res?.data?.data?.totalMoney
+                              const orderId = res?.data?.data?.id
+                              getVnpayUrl(amount, orderId).then(res => {
+                                if (res.status === 201) {
+                                  window.location.replace(res?.data?.data)
+                                }
+                              })
+                            }
                           } else {
                             notification.error({
                               message: 'Error',
@@ -145,7 +151,8 @@ const Cart = () => {
                         console.log(e)
                       }
                     }
-                  }).catch(() => {})
+                  }).catch(() => {
+                  })
                 }
               }}
             >

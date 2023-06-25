@@ -37,3 +37,7 @@ export const ORDER_API = {
 export const BANNER_API = {
   GET_BANNER: '/sliders',
 }
+
+export const PAYMENT_API = {
+  GET_VNPAY_URL: '/transations/vnpay',
+}

@@ -94,17 +94,17 @@ const SignUp = () => {
             />
           </Form.Item>
           <AntButton text={"Sign up"} htmlType="submit" theme={'dark'} style={{width: "100%", borderRadius: 20}}/>
-          <div className="signup-other">
-            Or sign up with
-            <div>
-              <Button>
-                <GoogleCircleFilled style={{fontSize: 24}}/>
-              </Button>
-              <Button>
-                <FacebookFilled  style={{fontSize: 24}}/>
-              </Button>
-            </div>
-          </div>
+          {/*<div className="signup-other">*/}
+          {/*  Or sign up with*/}
+          {/*  <div>*/}
+          {/*    <Button>*/}
+          {/*      <GoogleCircleFilled style={{fontSize: 24}}/>*/}
+          {/*    </Button>*/}
+          {/*    <Button>*/}
+          {/*      <FacebookFilled  style={{fontSize: 24}}/>*/}
+          {/*    </Button>*/}
+          {/*  </div>*/}
+          {/*</div>*/}
           <div className="signup-forgot-password">
             Already have an account?
           </div>

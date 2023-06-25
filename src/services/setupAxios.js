@@ -40,7 +40,7 @@ const addInterceptor = (instant) => {
           message: 'Phiên đăng nhập hết hạn',
           description: 'Vui lòng đăng nhập lại',
         })
-        window.location.href = '/sign-in'
+        window.location.href = '/'
       }
       return Promise.reject(err)
     }

@@ -1,6 +1,9 @@
 import {Carousel, notification} from "antd";
 import {useEffect, useState} from "react";
 import {getAllSliders} from "../../../../services/slider.service.js";
+import useCallApi from "../../../../hook/useCallApi.js";
+import {getProductDetail} from "../../../../services/shop.service.js";
+import Spinner from "../../../common/Spinner/index.jsx";
 
 const contentStyle = {
   height: '600px',
@@ -13,46 +16,44 @@ const contentStyle = {
 const Gallery = () => {
   const [sliders, setSliders] = useState([])
 
-  useEffect(() => {
-    try {
-      getAllSliders().then(res => {
-        console.log(res)
-        if (res.status === 200) {
-          console.log(res.data.data.items)
-          setSliders([...res?.data?.data?.items.map((item) => ({
-            height: '600px',
-            color: '#fff',
-            lineHeight: '600px',
-            textAlign: 'center',
-            background: '#364d79',
-            backgroundImage: `url(${item?.url})`,
-          }))])
-        } else {
-          notification.error({
-            message: "Error",
-            description: "Can't get sliders"
-          })
-        }
-      })
-    } catch (e) {
+  const { send: fetchSliders, loading } = useCallApi({
+    callApi: getAllSliders,
+    success: (res) => {
+      console.log(res)
+      setSliders([...res?.data?.items.map((item) => ({
+        height: '600px',
+        color: '#fff',
+        lineHeight: '600px',
+        textAlign: 'center',
+        background: '#364d79',
+        backgroundImage: `url(${item?.url})`,
+      }))])
+    },
+    error: () => {
       notification.error({
         message: "Error",
-        description: "Can't get sliders"
+        description: "Something went wrong"
       })
     }
   })
 
+  useEffect(() => {
+    fetchSliders()
+  }, [])
+
   return(
     <div style={{marginBottom: "48px"}}>
-      <Carousel effect="fade">
-        {sliders.map((slider, index) => {
-          return (
-            <div key={index}>
-              <h3 style={slider}></h3>
-            </div>
-          )
-        })}
-      </Carousel>
+      {loading ? <div style={{display: "block", height: 600}}><Spinner/></div> : (
+        <Carousel effect="fade">
+          {sliders.map((slider, index) => {
+            return (
+              <div key={index}>
+                <h3 style={slider}></h3>
+              </div>
+            )
+          })}
+        </Carousel>
+      )}
     </div>
   )
 }
