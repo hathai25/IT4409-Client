@@ -35,7 +35,7 @@ export const ORDER_API = {
 }
 
 export const BANNER_API = {
-  GET_BANNER: '/sliders',
+  GET_BANNER: '/api/sliders',
 }
 
 export const PAYMENT_API = {
